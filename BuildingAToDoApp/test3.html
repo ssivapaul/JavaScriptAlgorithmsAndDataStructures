@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>remove() Method Example</title>
+  </head>
+  <body>
+    <p id="myParagraph">This is a paragraph. Click the button to remove me.</p>
+    <button onclick="removeElement()">Remove Paragraph</button>
+
+    <script>
+      function removeElement() {
+        let element = document.getElementById("myParagraph");
+        if (element) {
+          element.remove(); // Removes the paragraph from the DOM
+        }
+      }
+    </script>
+  </body>
+</html>

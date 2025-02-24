@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>showModal() Example</title>
+  </head>
+  <body>
+    <button onclick="openModal()">Open Modal</button>
+
+    <dialog id="myDialog">
+      <p>This is a modal dialog!</p>
+      <button onclick="closeModal()">Close</button>
+    </dialog>
+
+    <script>
+      function openModal() {
+        document.getElementById("myDialog").showModal();
+      }
+
+      function closeModal() {
+        document.getElementById("myDialog").close();
+      }
+    </script>
+  </body>
+</html>
