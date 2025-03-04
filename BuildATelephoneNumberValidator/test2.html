@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>US Number Validator</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      input,
+      button {
+        margin: 10px 0;
+        padding: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>US Phone Number Validator</h2>
+    <input type="text" id="user-input" placeholder="Enter US phone number" />
+    <button id="check-btn">Check</button>
+    <div id="results-div"></div>
+
+    <script>
+      document
+        .getElementById("check-btn")
+        .addEventListener("click", function () {
+          const userInput = document.getElementById("user-input").value.trim();
+          const resultDiv = document.getElementById("results-div");
+
+          const validUSNumber =
+            /^(1\s?)?(\(\d{3}\)|\d{3})[\s-]?\d{3}[\s-]?\d{4}$/;
+
+          if (validUSNumber.test(userInput)) {
+            resultDiv.textContent = "Valid US number: " + userInput;
+            resultDiv.style.color = "green";
+          } else {
+            resultDiv.textContent = "Invalid US number: " + userInput;
+            resultDiv.style.color = "red";
+          }
+        });
+    </script>
+  </body>
+</html>
