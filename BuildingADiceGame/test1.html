@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Score Input</title>
+  </head>
+  <body>
+    <div>
+      <label
+        >Player 1: <input type="number" class="score-input" disabled />
+        <span class="score-span"></span
+      ></label>
+    </div>
+    <div>
+      <label
+        >Player 2: <input type="number" class="score-input" disabled />
+        <span class="score-span"></span
+      ></label>
+    </div>
+    <div>
+      <label
+        >Player 3: <input type="number" class="score-input" disabled />
+        <span class="score-span"></span
+      ></label>
+    </div>
+
+    <button onclick="updateScore(1, 75)">Update Player 2's Score</button>
+
+    <script>
+      function updateScore(index, score) {
+        // Get all score inputs and spans
+        const scoreInputs = document.querySelectorAll(".score-input");
+        const scoreSpans = document.querySelectorAll(".score-span");
+
+        // Check if index is within bounds
+        if (index >= 0 && index < scoreInputs.length) {
+          scoreInputs[index].disabled = false; // Enable the input
+          scoreInputs[index].value = score; // Set score value
+          scoreSpans[index].textContent = `Score = ${score}`; // Display score in span
+        }
+      }
+    </script>
+  </body>
+</html>
