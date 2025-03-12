@@ -40,6 +40,32 @@ const updateRadioOption = (index, score) => {
   scoreSpans[index].textContent = `, score = ${score}`;
 };
 
+const getHighestDuplicates = (diceValuesArr) => {
+  let duplicates = {};
+  let highestDuplicate = 0;
+  score = diceValuesArr.reduce((sum, num) => sum + num, 0);
+
+  diceValuesArr.forEach((a) => {
+    duplicates[a] = (duplicates[a] || 0) + 1;
+    if (duplicates[a] > highestDuplicate) {
+      highestDuplicate = duplicates[a];
+    }
+  });
+
+  if (highestDuplicate >= 4) {
+    updateRadioOption(5, 0);
+    updateRadioOption(0, score);
+    updateRadioOption(1, score);
+    return;
+  } else if (highestDuplicate === 3) {
+    updateRadioOption(5, 0);
+    updateRadioOption(0, score);
+    return;
+  }
+  updateRadioOption(5, 0);
+  return;
+};
+
 rollDiceBtn.addEventListener("click", () => {
   if (rolls === 3) {
     alert("You have made three rolls this round. Please select a score.");
@@ -47,6 +73,7 @@ rollDiceBtn.addEventListener("click", () => {
     rolls++;
     rollDice();
     updateStats();
+    getHighestDuplicates(diceValuesArr);
   }
 });
 
