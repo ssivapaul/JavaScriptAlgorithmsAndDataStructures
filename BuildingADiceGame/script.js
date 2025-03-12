@@ -40,6 +40,16 @@ const updateRadioOption = (index, score) => {
   scoreSpans[index].textContent = `, score = ${score}`;
 };
 
+const updateScore = (value, id) => {
+  let numValue = parseInt(value);
+  let numTotalScore = parseInt(totalScoreElement.textContent);
+  numTotalScore += numValue;
+  totalScoreElement.textContent = "" + numTotalScore;
+  const li = document.querySelector("li");
+  li.textContent = `${id} : ${numValue}`;
+  scoreHistory.appendChild(li);
+};
+
 const getHighestDuplicates = (diceValuesArr) => {
   let duplicates = {};
   let highestDuplicate = 0;
