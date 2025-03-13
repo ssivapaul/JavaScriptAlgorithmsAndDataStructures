@@ -46,8 +46,6 @@ const updateScore = (selectedValue, achieved) => {
 
   scoreHistory.innerHTML += `<li>${achieved} : ${selectedValue}</li>`;
 };
-updateScore("20", "Hi");
-updateScore("50", "John");
 
 const getHighestDuplicates = (arr) => {
   const counts = {};
@@ -118,4 +116,23 @@ rulesBtn.addEventListener("click", () => {
     rulesBtn.textContent = "Show rules";
     rulesContainer.style.display = "none";
   }
+});
+
+keepScoreBtn.addEventListener("click", () => {
+  let selectedValue = "None";
+  let selectedId = "None";
+  for (const scoreInput of scoreInputs) {
+    if (!scoreInput.checked) {
+      alert("Select one option...");
+      return;
+    }
+    if (scoreInput.checked) {
+      selectedValue = scoreInput.value;
+      selectedId = scoreInput.id;
+      break;
+    }
+  }
+
+  updateScore(selectedValue, selectedId);
+  resetRadioOptions();
 });
