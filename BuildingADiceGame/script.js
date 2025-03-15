@@ -83,6 +83,23 @@ const getHighestDuplicates = (arr) => {
   updateRadioOption(5, 0);
 };
 
+const detectFullHouse = (arr) => {
+  const counts = {};
+
+  for (const num of arr) {
+    counts[num] = counts[num] ? counts[num] + 1 : 1;
+  }
+
+  const hasThreeOfAKind = Object.values(counts).includes(3);
+  const hasPair = Object.values(counts).includes(2);
+
+  if (hasThreeOfAKind && hasPair) {
+    updateRadioOption(2, 25);
+  }
+
+  updateRadioOption(5, 0);
+};
+
 const resetRadioOptions = () => {
   scoreInputs.forEach((input) => {
     input.disabled = true;
@@ -113,6 +130,33 @@ const resetGame = () => {
   resetRadioOptions();
 };
 
+const checkForStraights = (diceValuesArr) => {
+  diceValuesArr = [...new Set(diceValuesArr)];
+  diceValuesArr.sort((a, b) => a - b);
+  if (diceValuesArr.length >= 4) {
+    let counter = 0;
+    for (let i = 0; i <= diceValuesArr.length - 4; i++) {
+      let count = 0;
+      for (let j = 1; j < diceValuesArr.length; j++) {
+        if (diceValuesArr[j + i] === diceValuesArr[j + i - 1] + 1) {
+          count++;
+        } else break;
+      }
+      if (count > counter) counter = count;
+    }
+    if (counter === 4) {
+      //large straight, 5-consecutive numbers
+      updateRadioOption(4, 40);
+      updateRadioOption(3, 30);
+    } else if (counter === 3) {
+      // Small straight, 4-consecutive numbers
+      updateRadioOption(3, 30);
+      updateRadioOption(5, 0);
+    }
+  }
+  updateRadioOption(5, 0);
+};
+
 rollDiceBtn.addEventListener("click", () => {
   if (rolls === 3) {
     alert("You have made three rolls this round. Please select a score.");
@@ -122,6 +166,8 @@ rollDiceBtn.addEventListener("click", () => {
     rollDice();
     updateStats();
     getHighestDuplicates(diceValuesArr);
+    detectFullHouse(diceValuesArr);
+    checkForStraights(diceValuesArr);
   }
 });
 
