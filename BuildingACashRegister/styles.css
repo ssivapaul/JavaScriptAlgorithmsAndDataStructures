@@ -1,0 +1,102 @@
+html {
+  color: white;
+  font-family: "Century Gothic", Verdana, sans-serif;
+}
+
+body #container {
+  min-width: 400px;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #333;
+  height: 700px;
+  margin: 0 auto;
+}
+
+#lbl-cash {
+  font-size: 1.3rem;
+  padding: 15px;
+  white-space: nowrap;
+}
+
+#cash {
+  min-width: 220px;
+  height: 25px;
+}
+
+#purchase-btn {
+  font-size: 1.3rem;
+  margin: 10px;
+  width: 120px;
+  height: 35px;
+  border-radius: 9px;
+  background-color: orange;
+}
+
+#screen {
+  background-color: lightblue;
+  display: flex;
+  justify-content: center; /* Horizontal */
+  align-items: center; /* Vertical */
+  width: 180px;
+  height: 50px;
+}
+
+#price-screen {
+  display: flex;
+  background-color: #333;
+  width: 165px;
+  height: 35px;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+#support {
+  position: relative;
+  width: 0px;
+  height: 30px;
+}
+
+#screen-support {
+  position: absolute;
+  background-color: lightblue;
+  width: 30px;
+  height: 30px;
+  margin-left: -70px;
+}
+#top-register {
+  display: flex;
+  width: 350px;
+  height: 300px;
+  border-radius: 40px 40px 0 0;
+  background-color: #11ddff;
+}
+
+.register-btns {
+  position: relative;
+  width: 75px;
+  height: 75px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  grid-template-rows: repeat(3, 1fr); /* 3 rows */
+}
+
+button {
+  background-color: black;
+  width: 20px;
+  height: 20px;
+}
+
+#cash-in-drawer {
+  padding: 10px 0px 0px 10px;
+  background-color: #ddd;
+  width: 200px;
+  height: 250px;
+  margin: 30px 20px 0px 0px;
+  border-radius: 10px;
+  color: black;
+}

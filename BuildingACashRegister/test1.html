@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>2D Array to Paragraphs</title>
+  </head>
+  <body>
+    <div id="output"></div>
+
+    <script>
+      // Sample 2D array
+      const data = [
+        ["Apple", "Banana", "Cherry"],
+        ["Dog", "Elephant", "Frog"],
+        ["Guitar", "Harp", "Igloo"],
+      ];
+
+      const outputDiv = document.getElementById("output");
+
+      // Loop through the 2D array
+      data.forEach((row) => {
+        // Flatten each row into a string
+        const rowText = row;
+        outputDiv.innerHTML += `<div> ${rowText}</div>`;
+        // Create a <p> element
+        //const p = document.createElement("p");
+        //p.textContent = rowText;
+
+        // Append <p> to the output div
+        //outputDiv.appendChild(p);
+      });
+    </script>
+  </body>
+</html>
