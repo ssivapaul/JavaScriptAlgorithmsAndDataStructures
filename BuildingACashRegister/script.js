@@ -80,10 +80,18 @@ const mapped = cid
   .reverse()
   .map((x) => `<div>${getValue(x[0])}: ${x[1]}</div>`);
 cashInDrawer.innerHTML += mapped.join("");
+let sum = 0;
+let cidCT = cid.map((c) => [c[0], (sum += c[1] * 100)]);
+console.log(cidCT);
+
+const CDW = amountDenomWise(10000 - 326);
+sum = 0;
+let CCT = CDW.map((c) => [c[0], (sum += c[1] * 100)]);
+console.log(CCT);
 //-------------------------------------------------------
 purchaseBtn.addEventListener("click", () => {
-  let cashCents = Math.round(Number(cash.value) * 100);
-  let priceCents = Math.round(price * 100);
+  //let cashCents = Math.round(Number(cash.value) * 100);
+  //let priceCents = Math.round(price * 100);
   if (priceCents > cashCents) {
     alert("Customer does not have enough money to purchase the item");
   }
@@ -91,7 +99,7 @@ purchaseBtn.addEventListener("click", () => {
     changeDue.textContent = "No change due - customer paid with exact cash";
   }
   if (priceCents < cashCents) {
-    const changeDenomWise = amountDenomWise(cashCents - priceCents);
+    //const changeDenomWise = amountDenomWise(cashCents - priceCents)
     changeDue.innerHTML = `<div>Status: OPEN</div>`;
     let change = changeDenomWise.map((c) => c[0]);
     let ci = cid.map((c) => c[0]);
@@ -101,9 +109,7 @@ purchaseBtn.addEventListener("click", () => {
     });
     console.log(changeDenomWise);
     console.log(cid);
-    let mapped = changeDenomWise.map((x) => {
-      if (x[1]) return `<div>${x[0]}: $${x[1]}</div>`;
-    });
+    let mapped = changeDenomWise.map((x) => `<div>${x[0]}: $${x[1]}</div>`);
     changeDue.innerHTML += mapped.join("");
   }
 });
