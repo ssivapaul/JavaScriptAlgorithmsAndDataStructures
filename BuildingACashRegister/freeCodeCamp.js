@@ -61,7 +61,7 @@ const checkCashRegister = () => {
   if (totalCID === changeDue) {
     result.status = "CLOSED";
   }
-
+  //--------------------Calculation starts--------------------------
   for (let i = 0; i <= reversedCid.length; i++) {
     if (changeDue >= denominations[i] && changeDue > 0) {
       const [denominationName, total] = reversedCid[i];
@@ -75,6 +75,7 @@ const checkCashRegister = () => {
       }
     }
   }
+  //-------------------------------------------------------
   if (changeDue > 0) {
     displayChangeDue.innerHTML = "<p>Status: INSUFFICIENT_FUNDS</p>";
     return;
