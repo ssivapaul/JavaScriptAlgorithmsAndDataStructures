@@ -1,5 +1,6 @@
-let price = 3.26;
-let cid = [
+let price = 19.5;
+
+let cid1 = [
   ["PENNY", 1.01], // 1 cents
   ["NICKEL", 2.05], // 5 cents
   ["DIME", 3.1], // 10 cents
@@ -11,16 +12,16 @@ let cid = [
   ["ONE HUNDRED", 100],
 ];
 
-const denom = [
-  "Pennies",
-  "Nickels",
-  "Dimes",
-  "Quarters",
-  "Ones",
-  "Fives",
-  "Tens",
-  "Twenties",
-  "Hundreds",
+let cid = [
+  ["PENNY", 0.1],
+  ["NICKEL", 0.1],
+  ["DIME", 0.3],
+  ["QUARTER", 0],
+  ["ONE", 1],
+  ["FIVE", 0],
+  ["TEN", 0],
+  ["TWENTY", 0],
+  ["ONE HUNDRED", 0],
 ];
 
 const denoms = [
@@ -34,82 +35,125 @@ const denoms = [
   ["NICKEL", 5],
   ["PENNY", 1],
 ];
-const lookUp = [
-  ["ONE HUNDRED", "Hundreds"],
-  ["TWENTY", "Twenties"],
-  ["TEN", "Tens"],
-  ["FIVE", "Fives"],
-  ["ONE", "Ones"],
-  ["QUARTER", "Quarters"],
-  ["DIME", "Dimes"],
-  ["NICKLE", "Nickels"],
-  ["PENNY", "Pennies"],
-];
-//-----------------------------------
-function amountDenomWise(cents) {
-  const result = [];
-  denoms.forEach((denom) => {
-    const key = denom[0];
-    const value = denom[1];
-    const count = Math.floor(cents / value);
-
-    if (count > 0) {
-      result.push([key, (count * value) / 100]);
-      cents = cents % value;
-    }
-  });
-  return result;
-}
-//---------------------------------
-function getValue(key) {
-  for (let item of lookUp) {
-    if (item[0] === key) return item[1];
-  }
-  return null; // or return a default value if key not found
-}
-//------------------------------------------------------------
-
+const lookUp = {
+  "ONE HUNDRED": "Hundreds",
+  TWENTY: "Twenties",
+  TEN: "Tens",
+  FIVE: "Fives",
+  ONE: "Ones",
+  QUARTER: "Quarters",
+  DIME: "Dimes",
+  NICKEL: "Nickels",
+  PENNY: "Pennies",
+};
+//---------------------------------------------------------
 let cash = document.getElementById("cash"); // Customer pay
 let purchaseBtn = document.getElementById("purchase-btn");
 let changeDue = document.getElementById("change-due");
 let cashInDrawer = document.getElementById("cash-in-drawer");
 let priceScreen = document.getElementById("price-screen");
-//-----------------------------------------
-priceScreen.textContent = `Total: $${price}`;
-const mapped = cid
-  .reverse()
-  .map((x) => `<div>${getValue(x[0])}: ${x[1]}</div>`);
-cashInDrawer.innerHTML += mapped.join("");
-let sum = 0;
-let cidCT = cid.map((c) => [c[0], (sum += c[1] * 100)]);
-console.log(cidCT);
+//---------------------------------------------------------
 
-const CDW = amountDenomWise(10000 - 326);
-sum = 0;
-let CCT = CDW.map((c) => [c[0], (sum += c[1] * 100)]);
-console.log(CCT);
-//-------------------------------------------------------
+let rcid = [...cid].reverse(); // Reverse Change In Drawer
+let rCid = [];
+rcid.forEach(([denom, value]) =>
+  rCid.push([lookUp[denom], Math.round(value * 100)])
+);
+//------------------------------------------------------------------------------------
+const Denoms = (cents) => {
+  const result = [];
+  denoms.forEach((den) => {
+    const key = den[0];
+    const val = den[1];
+    const count = Math.floor(cents / val);
+    result.push([key, Math.round(count * val)]);
+    cents = cents % val;
+  });
+  return result;
+};
+//------------------------------------------------------------------------------------
+priceScreen.innerHTML = `Total: $${price}`;
+cashInDrawer.innerHTML = `<div><strong>Change in drawer:</strong></div>`;
+cashInDrawer.innerHTML += rCid
+  .map(([den, val]) => `<div>${den}: $${val / 100}</div>`)
+  .join("");
+//------------------------------------------------------------------------------------
+
 purchaseBtn.addEventListener("click", () => {
-  //let cashCents = Math.round(Number(cash.value) * 100);
-  //let priceCents = Math.round(price * 100);
+  let cashCents = Math.round(Number(cash.value) * 100);
+  let priceCents = Math.round(Number(price) * 100);
+  let changedue = cashCents - priceCents;
+  let cDue = Denoms(cashCents - priceCents);
+  console.log(cDue);
+  let totalCid = rCid.reduce((acc, [_, val]) => {
+    return acc + val;
+  }, 0);
+
+  //1. alert: "Customer does not have enough money to purchase the item"
   if (priceCents > cashCents) {
+    cash.value = "";
     alert("Customer does not have enough money to purchase the item");
   }
+  //2. "Status: No change due - customer paid with exact cash"
   if (priceCents == cashCents) {
-    changeDue.textContent = "No change due - customer paid with exact cash";
+    changeDue.innerHTML =
+      "<div>No change due - customer paid with exact cash</div>";
+    return;
   }
+  //3. "Status: INSUFFICIENT_FUNDS"
+
+  if (totalCid < changedue) {
+    changeDue.innerHTML = "<div>Status: INSUFFICIENT_FUNDS</div>";
+    return;
+  }
+
+  //  5. Calculation starts
+  //----------------------
   if (priceCents < cashCents) {
-    //const changeDenomWise = amountDenomWise(cashCents - priceCents)
-    changeDue.innerHTML = `<div>Status: OPEN</div>`;
-    let change = changeDenomWise.map((c) => c[0]);
-    let ci = cid.map((c) => c[0]);
-    lookUp.forEach((look, i) => {
-      if (!change.includes(look[0])) changeDenomWise.splice(i, 0, [look[0], 0]);
-      if (!ci.includes(look[0])) cid.splice(i, 0, [look[0], 0]);
-    });
-    console.log(changeDenomWise);
-    console.log(cid);
-    let mapped = changeDenomWise.map((x) => `<div>${x[0]}: $${x[1]}</div>`);
-    changeDue.innerHTML += mapped.join("");
+    let newcDue = [];
+    let newrCid = [];
+    let short = 0;
+    for (let i = 0; i < cDue.length; i++) {
+      if (cDue[i][1] <= rCid[i][1]) {
+        if (short <= rCid[i][1] - cDue[i][1]) {
+          newcDue.push([cDue[i][0], cDue[i][1] + short]);
+          newrCid.push([rCid[i][0], rCid[i][1] - cDue[i][1] - short]);
+          short = 0;
+        } else if (short > rCid[i][1] - cDue[i][1]) {
+          newcDue.push([cDue[i][0], rCid[i][1]]);
+          newrCid.push([rCid[i][0], 0]);
+          short -= rCid[i][1] - cDue[i][1];
+        }
+      }
+      if (cDue[i][1] > rCid[i][1]) {
+        newcDue.push([cDue[i][0], rCid[i][1]]);
+        newrCid.push([rCid[i][0], 0]);
+        short += cDue[i][1] - rCid[i][1];
+      }
+    }
+    if (short > 0) {
+      changeDue.innerHTML = "<div>Status: INSUFFICIENT_FUNDS</div>";
+      return;
+    }
+
+    // 4. totalCid == changedue
+    if (totalCid == changedue) {
+      changeDue.innerHTML = "<div>Status: CLOSED</div>";
+      changeDue.innerHTML += newcDue
+        .filter(([_, val]) => val !== 0)
+        .map(([den, val]) => `<div> ${den}: $${val / 100}</div>`)
+        .join("");
+    } else {
+      changeDue.innerHTML = `<div>Status: OPEN</div>`;
+      changeDue.innerHTML += newcDue
+        .filter(([_, val]) => val !== 0)
+        .map(([den, val]) => `<div> ${den}: $${val / 100}</div>`)
+        .join("");
+    }
+    // UpDate drawer display
+    cashInDrawer.innerHTML = "<div><strong>Change in drawer:</strong></div>";
+    cashInDrawer.innerHTML += newrCid
+      .map(([den, val]) => `<div>${den}: $${val / 100}</div>`)
+      .join("");
   }
 });
