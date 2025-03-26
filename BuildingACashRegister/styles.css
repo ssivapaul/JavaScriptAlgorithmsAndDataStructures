@@ -47,12 +47,13 @@ body #container {
 }
 
 #screen {
-  background-color: lightblue;
+  background-color: #11ddff;
   display: flex;
   justify-content: center; /* Horizontal */
   align-items: center; /* Vertical */
-  width: 180px;
-  height: 50px;
+  width: 185px;
+  height: 60px;
+  border-radius: 5px;
 }
 
 #price-screen {
@@ -74,7 +75,7 @@ body #container {
 
 #screen-support {
   position: absolute;
-  background-color: lightblue;
+  background-color: #11ddff;
   width: 30px;
   height: 30px;
   margin-left: -70px;
